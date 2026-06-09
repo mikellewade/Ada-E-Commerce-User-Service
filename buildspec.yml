@@ -3,7 +3,7 @@ version: 0.2
 env:
   variables:
     AWS_DEFAULT_REGION: us-east-1
-    IMAGE_REPO_NAME: ecommerce/users
+    IMAGE_REPO_NAME: mikelle/ecommerce/users
     SQLALCHEMY_TEST_DATABASE_URI: "postgresql://test_user:test_pass@localhost:5432/test_db"
 
 phases:
