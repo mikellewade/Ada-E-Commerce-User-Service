@@ -21,22 +21,22 @@ phases:
 
   build:
     commands:
-      - echo Building the Docker image...
-      - docker build --platform linux/amd64 --provenance=false -t $REPOSITORY_URI:$IMAGE_TAG .
-      - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
       - echo Running tests... 
       - pip install -r requirements.txt 
       - pytest
+      - echo Building the Docker image...
+      - docker build --platform linux/amd64 --provenance=false -t $REPOSITORY_URI:$IMAGE_TAG .
+      - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
 
     
   post_build:
     commands:
+      - docker stop test-db && docker rm test-db 
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - docker push $REPOSITORY_URI:latest
       - echo Writing image definitions file...
       - printf '[{"name":"users", "imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-      - docker stop test-db && docker rm test-db 
 
 artifacts:
   files:
